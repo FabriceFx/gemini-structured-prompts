@@ -12,7 +12,7 @@
  */
 const doGet = (e) => {
   try {
-    const template = HtmlService.createTemplateFromFile('Index');
+    const template = HtmlService.createTemplateFromFile('index');
     
     // Évaluation et configuration de la sortie HTML
     return template.evaluate()
