@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Prompts - Gemini Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .input-group { margin-bottom: 1rem; }
+        .dynamic-list-item { transition: all 0.2s; }
+        .dynamic-list-item:hover { background-color: #f9fafb; }
+        /* Markdown styles */
+        .prose h1 { font-size: 1.5em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+        .prose h2 { font-size: 1.25em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+        .prose ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; }
+        .prose p { margin-bottom: 1em; }
+        .prose code { background-color: #f3f4f6; padding: 0.2em 0.4em; border-radius: 0.25em; font-size: 0.9em; }
+        .prose pre { background-color: #1f2937; color: white; padding: 1em; border-radius: 0.5em; overflow-x: auto; margin-bottom: 1em; }
+        
+        .pillar-badge {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <header class="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-indigo-700 flex items-center">
+                    <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" class="h-8 w-8 mr-2" alt="Gemini Logo">
+                    Générateur de Prompts
+                </h1>
+                <p class="text-gray-500 mt-2">Optimisé selon le guide officiel <em>Gemini for Google Workspace</em>.</p>
+            </div>
+            <div class="flex gap-2">
+                 <button onclick="toggleApiSettings()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 shadow-sm transition-colors">
+                    <i class="fas fa-key mr-2 text-yellow-500"></i>Clé API
+                </button>
+                <button onclick="resetForm()" class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-undo mr-2"></i>Réinitialiser
+                </button>
+            </div>
+        </header>
+
+        <!-- Guide Banner -->
+        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 border-l-4 border-indigo-500 p-4 mb-8 rounded-r-lg shadow-sm">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-info-circle text-indigo-500 mt-0.5"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-indigo-800">
+                        <strong>Les 4 Piliers d'un Prompt Efficace :</strong> 
+                        Pour obtenir les meilleurs résultats, assurez-vous de remplir les champs 
+                        <span class="inline-block bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-xs font-bold mx-0.5">PERSONA</span>
+                        <span class="inline-block bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-xs font-bold mx-0.5">TÂCHE</span>
+                        <span class="inline-block bg-green-100 text-green-800 px-1.5 py-0.5 rounded text-xs font-bold mx-0.5">CONTEXTE</span> et
+                        <span class="inline-block bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded text-xs font-bold mx-0.5">FORMAT</span>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Key Modal -->
+        <div id="api-settings" class="hidden mb-8 bg-white border-l-4 border-yellow-400 p-4 rounded-r shadow-md animate-fade-in-down">
+            <div class="flex justify-between items-start">
+                <div class="w-full">
+                    <h3 class="font-bold text-gray-800 mb-2">Configuration Gemini API</h3>
+                    <p class="text-sm text-gray-600 mb-3">Entrez votre clé API Google pour tester le prompt directement.</p>
+                    <div class="flex gap-2">
+                        <input type="password" id="api-key-input" placeholder="AIza..." class="flex-grow rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2 text-sm">
+                        <button onclick="saveApiKey()" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm hover:bg-indigo-700">Sauvegarder</button>
+                    </div>
+                </div>
+                <button onclick="toggleApiSettings()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Formulaire (Gauche) -->
+            <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 flex flex-col h-full">
+                <div class="bg-indigo-600 px-6 py-4 flex-none flex justify-between items-center">
+                    <h2 class="text-lg font-semibold text-white flex items-center">
+                        <i class="fas fa-sliders-h mr-2"></i> Paramètres du Prompt
+                    </h2>
+                </div>
+                
+                <form id="promptForm" class="p-6 space-y-8 overflow-y-auto flex-grow">
+                    
+                    <!-- Identification Rapide -->
+                    <div class="grid grid-cols-2 gap-4">
+                         <div>
+                            <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">ID</label>
+                            <input type="text" id="id" placeholder="ex: analyse_swot" class="w-full rounded bg-gray-50 border-gray-200 border p-2 text-sm focus:bg-white transition" oninput="updateJSON()">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Titre</label>
+                            <input type="text" id="titre" placeholder="Titre descriptif" class="w-full rounded bg-gray-50 border-gray-200 border p-2 text-sm focus:bg-white transition" oninput="updateJSON()">
+                        </div>
+                    </div>
+
+                    <!-- Les 4 Piliers -->
+                    <div class="space-y-6 border-t border-gray-100 pt-6">
+                        
+                        <!-- 1. PERSONA -->
+                        <div class="relative group">
+                            <div class="flex justify-between mb-1">
+                                <label class="block text-sm font-medium text-gray-700">1. Persona (Rôle)</label>
+                                <span class="pillar-badge bg-purple-100 text-purple-700">Qui</span>
+                            </div>
+                            <textarea id="role" rows="2" placeholder="Ex: Tu es un chef de projet Google Cloud expérimenté..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 border p-2 text-sm" oninput="updateJSON()"></textarea>
+                            <p class="text-xs text-gray-400 mt-1 hidden group-hover:block">Donnez une identité claire à l'IA pour calibrer son expertise.</p>
+                        </div>
+
+                        <!-- 2. TASK -->
+                        <div class="relative group">
+                            <div class="flex justify-between mb-1">
+                                <label class="block text-sm font-medium text-gray-700">2. Tâche (Mission)</label>
+                                <span class="pillar-badge bg-blue-100 text-blue-700">Quoi</span>
+                            </div>
+                            <textarea id="tache" rows="2" placeholder="Ex: Rédige un email de synthèse pour le comité de direction..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 border p-2 text-sm" oninput="updateJSON()"></textarea>
+                            <p class="text-xs text-gray-400 mt-1 hidden group-hover:block">Décrivez l'action précise à effectuer.</p>
+                        </div>
+
+                         <!-- 3. CONTEXT -->
+                         <div class="relative group">
+                            <div class="flex justify-between mb-1">
+                                <label class="block text-sm font-medium text-gray-700">3. Contexte</label>
+                                <span class="pillar-badge bg-green-100 text-green-700">Où/Pourquoi</span>
+                            </div>
+                            <textarea id="contexte" rows="2" placeholder="Ex: Nous venons de lancer le produit X et les premiers retours sont mitigés..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 border p-2 text-sm" oninput="updateJSON()"></textarea>
+                            <p class="text-xs text-gray-400 mt-1 hidden group-hover:block">Donnez un maximum d'informations de fond pour éviter les réponses génériques.</p>
+                        </div>
+
+                        <!-- 4. FORMAT, TON & CONTRAINTES -->
+                        <div class="relative group">
+                            <div class="flex justify-between mb-1">
+                                <label class="block text-sm font-medium text-gray-700">4. Format & Contraintes</label>
+                                <span class="pillar-badge bg-orange-100 text-orange-700">Comment</span>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <!-- Format (Liste déroulante) -->
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 mb-1">Format</label>
+                                    <select id="format" class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 border p-2 text-sm bg-white" onchange="updateJSON()">
+                                        <option value="">-- Sélectionner --</option>
+                                        <option value="Texte suivi (Paragraphes)">Texte suivi (Paragraphes)</option>
+                                        <option value="Liste à puces">Liste à puces</option>
+                                        <option value="Tableau structuré">Tableau structuré</option>
+                                        <option value="Email formel">Email formel</option>
+                                        <option value="Article de blog (Markdown)">Article de blog (Markdown)</option>
+                                        <option value="Code">Code</option>
+                                        <option value="JSON">JSON</option>
+                                        <option value="Plan détaillé">Plan détaillé</option>
+                                        <option value="Script vidéo/audio">Script vidéo/audio</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Ton (Liste déroulante) -->
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500 mb-1">Ton</label>
+                                    <select id="ton" class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 border p-2 text-sm bg-white" onchange="updateJSON()">
+                                        <option value="">-- Sélectionner --</option>
+                                        <option value="Professionnel & Neutre">Professionnel & Neutre</option>
+                                        <option value="Amical & Décontracté">Amical & Décontracté</option>
+                                        <option value="Enthousiaste & Motivant">Enthousiaste & Motivant</option>
+                                        <option value="Concis & Direct">Concis & Direct</option>
+                                        <option value="Empathique & Bienveillant">Empathique & Bienveillant</option>
+                                        <option value="Académique & Détaillé">Académique & Détaillé</option>
+                                        <option value="Persuasif (Vente)">Persuasif (Vente)</option>
+                                        <option value="Vulgarisé (ELI5)">Vulgarisé (Simple pour débutant)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Contraintes (Textarea) -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Autres Contraintes</label>
+                                <textarea id="contraintes" rows="2" placeholder="Ex: Moins de 200 mots, pas de jargon technique, utiliser des émojis..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 border p-2 text-sm" oninput="updateJSON()"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instructions & Détails -->
+                    <div class="space-y-4 border-t border-gray-100 pt-6">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Instructions Spécifiques (Étapes)</label>
+                                <button type="button" onclick="addListItem('instructions-container')" class="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 px-2 py-1 rounded transition"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div id="instructions-container" class="space-y-2">
+                                <!-- Dynamic Items -->
+                            </div>
+                        </div>
+
+                         <!-- Feedback Loop (NOUVEAU) -->
+                         <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 mt-4">
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input id="feedback_loop" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" onchange="updateJSON()">
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="feedback_loop" class="font-bold text-indigo-900">Activer la boucle de feedback (Recommandé)</label>
+                                    <p class="text-indigo-700 mt-1 text-xs">Ajoute la consigne : <em>"Quelles questions as-tu pour moi qui t'aideraient à fournir le meilleur résultat ?"</em> (Page 43 du guide).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!-- Variables -->
+                         <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Variables Utilisateur ([...])</label>
+                                <button type="button" onclick="addListItem('variables-container')" class="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 px-2 py-1 rounded transition"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <div id="variables-container" class="space-y-2">
+                                <!-- Dynamic Items -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Preview & Test (Droite) -->
+            <div class="flex flex-col h-full gap-6">
+                
+                <!-- Bloc Aperçu Texte & Test -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col flex-grow">
+                     <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="text-sm font-semibold text-gray-700 flex items-center">
+                            <i class="fas fa-file-alt mr-2 text-indigo-500"></i> Prompt Final Généré
+                        </h3>
+                        <div class="flex gap-2">
+                            <button onclick="copyToClipboard('text-preview-content')" class="text-xs bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-3 py-1.5 rounded transition shadow-sm">
+                                <i class="far fa-copy mr-1"></i> Copier
+                            </button>
+                            <button onclick="testWithGemini()" id="btn-test-gemini" class="text-xs bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-4 py-1.5 rounded transition shadow-sm flex items-center font-medium">
+                                <i class="fas fa-sparkles mr-1.5"></i> Tester avec Gemini
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Texte du prompt -->
+                    <div class="p-4 bg-gray-50 text-sm text-gray-800 whitespace-pre-wrap font-sans border-b border-gray-200 max-h-80 overflow-y-auto leading-relaxed" id="text-preview-content">
+                        Remplissez le formulaire...
+                    </div>
+
+                    <!-- Zone de réponse Gemini -->
+                    <div id="gemini-response-area" class="flex-grow bg-white p-4 relative hidden flex flex-col border-t-4 border-indigo-500">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Réponse de Gemini</h4>
+                             <button onclick="clearResponse()" class="text-xs text-gray-400 hover:text-red-500"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <div id="gemini-loader" class="hidden absolute inset-0 bg-white/90 flex flex-col items-center justify-center z-10">
+                            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mb-2"></div>
+                            <span class="text-xs text-indigo-600 font-medium">Gemini réfléchit...</span>
+                        </div>
+                        <div id="gemini-output" class="prose prose-sm max-w-none text-gray-800 overflow-y-auto h-full pr-2">
+                            <!-- Réponse Markdown ici -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloc Aperçu JSON (Réduit) -->
+                <div class="bg-gray-900 rounded-xl shadow-lg flex flex-col overflow-hidden border border-gray-700 relative group h-48">
+                    <div class="bg-gray-800 px-4 py-2 flex justify-between items-center border-b border-gray-700">
+                        <span class="text-gray-400 text-xs font-mono">JSON Structure</span>
+                         <button onclick="downloadJSON()" class="text-xs text-gray-300 hover:text-white"><i class="fas fa-download"></i></button>
+                    </div>
+                    <div class="relative flex-grow bg-[#1e1e1e] overflow-auto">
+                        <pre class="p-4 text-xs font-mono leading-relaxed"><code id="json-preview" class="language-json text-gray-300">...</code></pre>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-800 text-white px-4 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center z-50">
+        <i class="fas fa-check-circle text-green-400 mr-2"></i>
+        <span id="toast-message">Copié !</span>
+    </div>
+
+    <script>
+        // --- State & Init ---
+        const defaultInstructions = [''];
+        const defaultVariables = [''];
+        let promptTextCache = "";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderList('instructions-container', defaultInstructions);
+            renderList('variables-container', defaultVariables);
+            loadApiKey();
+            updateJSON();
+        });
+
+        // --- Core Logic ---
+
+        function updateJSON() {
+            // Get Values
+            const id = document.getElementById('id').value;
+            const title = document.getElementById('titre').value;
+            
+            const structure = {
+                role: document.getElementById('role').value,
+                contexte: document.getElementById('contexte').value,
+                tache: document.getElementById('tache').value,
+                instructions_detailles: getListValues('instructions-container').filter(i => i.trim() !== ''),
+                // Nouveaux champs séparés
+                format: document.getElementById('format').value,
+                ton: document.getElementById('ton').value,
+                contraintes: document.getElementById('contraintes').value,
+                // ---
+                variables: getListValues('variables-container').filter(v => v.trim() !== ''),
+                feedback_loop: document.getElementById('feedback_loop').checked
+            };
+
+            const promptObject = {
+                id: id || "id_prompt",
+                titre: title || "Titre",
+                structure: structure
+            };
+
+            // Update JSON Preview
+            const jsonString = JSON.stringify(promptObject, null, 2);
+            document.getElementById('json-preview').innerHTML = syntaxHighlight(jsonString);
+
+            // Update Text Preview
+            promptTextCache = generatePromptText(structure);
+            document.getElementById('text-preview-content').innerText = promptTextCache || "Commencez par définir le Persona et la Tâche...";
+        }
+
+        function generatePromptText(s) {
+            let parts = [];
+
+            // 1. Persona (Rôle)
+            if (s.role) parts.push(`**PERSONA (QUI) :**\n${s.role}`);
+
+            // 2. Contexte
+            if (s.contexte) parts.push(`**CONTEXTE (POURQUOI) :**\n${s.contexte}`);
+
+            // 3. Tâche
+            if (s.tache) parts.push(`**TÂCHE (QUOI) :**\n${s.tache}`);
+            
+            // Instructions
+            if (s.instructions_detailles && s.instructions_detailles.length > 0) {
+                let instr = `**INSTRUCTIONS :**\n`;
+                s.instructions_detailles.forEach(i => instr += `- ${i}\n`);
+                parts.push(instr.trim());
+            }
+
+            // 4. Format, Ton & Contraintes (GROUPÉS)
+            let formatParts = [];
+            
+            if (s.format) formatParts.push(`- Format : ${s.format}`);
+            if (s.ton) formatParts.push(`- Ton : ${s.ton}`);
+            if (s.contraintes) formatParts.push(`- Contraintes supplémentaires : ${s.contraintes}`);
+            
+            if (formatParts.length > 0) {
+                parts.push(`**FORMAT & CONTRAINTES (COMMENT) :**\n${formatParts.join('\n')}`);
+            }
+
+            // Variables
+            if (s.variables && s.variables.length > 0) {
+                let vars = `**VARIABLES À REMPLIR :**\n`;
+                s.variables.forEach(v => vars += `[${v}] = \n`);
+                parts.push(vars.trim());
+            }
+
+            // FEEDBACK LOOP
+            if (s.feedback_loop) {
+                parts.push(`---\n**IMPORTANT :** Avant de générer la réponse complète, pose-moi des questions si tu as besoin de précisions pour fournir le meilleur résultat. ("What questions do you have for me?")`);
+            }
+
+            return parts.join('\n\n');
+        }
+
+        // --- API Integration ---
+
+        function toggleApiSettings() {
+            document.getElementById('api-settings').classList.toggle('hidden');
+        }
+
+        function saveApiKey() {
+            const key = document.getElementById('api-key-input').value.trim();
+            if (key) {
+                localStorage.setItem('gemini_api_key', key);
+                showToast("Clé API sauvegardée !");
+                toggleApiSettings();
+            }
+        }
+
+        function loadApiKey() {
+            const key = localStorage.getItem('gemini_api_key');
+            if (key) document.getElementById('api-key-input').value = key;
+        }
+
+        function clearResponse() {
+            document.getElementById('gemini-output').innerHTML = '';
+            document.getElementById('gemini-response-area').classList.add('hidden');
+        }
+
+        async function testWithGemini() {
+            const apiKey = localStorage.getItem('gemini_api_key');
+            if (!apiKey) {
+                toggleApiSettings();
+                alert("Configurez votre clé API Gemini d'abord.");
+                return;
+            }
+
+            if (!promptTextCache || promptTextCache.length < 10) {
+                alert("Le prompt est trop court.");
+                return;
+            }
+
+            const responseArea = document.getElementById('gemini-response-area');
+            const loader = document.getElementById('gemini-loader');
+            const output = document.getElementById('gemini-output');
+            
+            responseArea.classList.remove('hidden');
+            loader.classList.remove('hidden');
+            output.innerHTML = ""; 
+
+            try {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: promptTextCache }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) throw new Error(data.error?.message || "Erreur API");
+
+                const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                if (generatedText) {
+                    output.innerHTML = marked.parse(generatedText);
+                } else {
+                    output.innerText = "Pas de réponse.";
+                }
+
+            } catch (error) {
+                output.innerHTML = `<span class="text-red-600 font-bold">Erreur : ${error.message}</span>`;
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        // --- List Management ---
+
+        function renderList(containerId, items) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            items.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'flex gap-2 items-center dynamic-list-item';
+                div.innerHTML = `
+                    <input type="text" value="${item}" class="flex-grow rounded-md border-gray-300 border p-2 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white" oninput="updateJSON()" placeholder="...">
+                    <button type="button" onclick="removeListItem('${containerId}', ${index})" class="text-gray-400 hover:text-red-500 p-1"><i class="fas fa-trash-alt"></i></button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addListItem(containerId) {
+            const items = getListValues(containerId);
+            items.push('');
+            renderList(containerId, items);
+            const inputs = document.getElementById(containerId).querySelectorAll('input');
+            inputs[inputs.length - 1].focus();
+        }
+
+        function removeListItem(containerId, index) {
+            const items = getListValues(containerId);
+            items.splice(index, 1);
+            renderList(containerId, items);
+            updateJSON();
+        }
+
+        function getListValues(containerId) {
+            return Array.from(document.getElementById(containerId).querySelectorAll('input')).map(input => input.value);
+        }
+
+        // --- Utils ---
+
+        function resetForm() {
+            if(confirm('Effacer le formulaire ?')) {
+                document.getElementById('promptForm').reset();
+                renderList('instructions-container', ['']);
+                renderList('variables-container', ['']);
+                clearResponse();
+                updateJSON();
+            }
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => showToast("Copié !"));
+        }
+
+        function downloadJSON() {
+            const text = document.getElementById('json-preview').innerText;
+            const name = (document.getElementById('id').value || 'prompt') + '.json';
+            const blob = new Blob([text], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            a.click();
+            showToast("Téléchargé !");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = 'text-yellow-300';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) cls = 'text-blue-400';
+                    else cls = 'text-green-400';
+                } else if (/true|false/.test(match)) cls = 'text-purple-400';
+                else if (/null/.test(match)) cls = 'text-gray-500';
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+    </script>
+</body>
+</html>
