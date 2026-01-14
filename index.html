@@ -33,7 +33,7 @@
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen">
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col min-h-screen">
         <header class="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
                 <h1 class="text-3xl font-bold text-indigo-700 flex items-center">
@@ -70,11 +70,47 @@
             </div>
         </div>
 
+        <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8 shadow-sm">
+            <h3 class="font-bold text-gray-800 mb-4 text-sm uppercase tracking-wide flex items-center">
+                <i class="fas fa-book-reader text-indigo-500 mr-2"></i> Comment utiliser cet outil ?
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm text-gray-600">
+                <div class="flex items-start gap-3">
+                    <div class="bg-indigo-100 text-indigo-700 font-bold rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 shadow-sm">1</div>
+                    <div>
+                        <strong class="text-gray-900 block mb-1">Définir</strong>
+                        Complétez le formulaire à gauche en suivant la méthode des 4 piliers (Rôle, Tâche, Contexte...) pour structurer votre demande.
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="bg-indigo-100 text-indigo-700 font-bold rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 shadow-sm">2</div>
+                    <div>
+                        <strong class="text-gray-900 block mb-1">Visualiser</strong>
+                        Le prompt optimisé s'assemble automatiquement dans le panneau de droite. Ajustez les options (Ton, Format) selon vos besoins.
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="bg-indigo-100 text-indigo-700 font-bold rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 shadow-sm">3</div>
+                    <div>
+                        <strong class="text-gray-900 block mb-1">Tester (Optionnel)</strong>
+                        Configurez une clé API pour tester directement ici, <strong>OU</strong> copiez simplement le prompt généré pour le coller dans l'interface de Gemini.
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="bg-indigo-100 text-indigo-700 font-bold rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 shadow-sm">4</div>
+                    <div>
+                        <strong class="text-gray-900 block mb-1">Exporter</strong>
+                        Copiez le texte final ou téléchargez la structure JSON pour l'intégrer dans vos propres scripts ou applications.
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="api-settings" class="hidden mb-8 bg-white border-l-4 border-yellow-400 p-4 rounded-r shadow-md animate-fade-in-down">
             <div class="flex justify-between items-start">
                 <div class="w-full">
                     <h3 class="font-bold text-gray-800 mb-2">Configuration Gemini API</h3>
-                    <p class="text-sm text-gray-600 mb-3">Entrez votre clé API Google pour tester le prompt directement.</p>
+                    <p class="text-sm text-gray-600 mb-3">La clé est <strong>optionnelle</strong>. Si vous n'en avez pas, vous pouvez simplement copier le résultat et le coller dans Gemini.</p>
                     <div class="flex gap-2">
                         <input type="password" id="api-key-input" placeholder="AIza..." class="flex-grow rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2 text-sm">
                         <button onclick="saveApiKey()" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm hover:bg-indigo-700">Sauvegarder</button>
@@ -84,7 +120,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             
             <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 flex flex-col h-full">
                 <div class="bg-indigo-600 px-6 py-4 flex-none flex justify-between items-center">
@@ -273,6 +309,11 @@
 
             </div>
         </div>
+
+        <footer class="mt-auto pt-6 pb-2 text-center text-sm text-gray-400 border-t border-gray-200">
+            <p>Développé avec <i class="fas fa-heart text-red-400 mx-1"></i> par <strong>Fabrice Faucheux</strong></p>
+        </footer>
+
     </div>
 
     <div id="toast" class="fixed bottom-5 right-5 bg-gray-800 text-white px-4 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center z-50">
