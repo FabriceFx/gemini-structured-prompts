@@ -13,14 +13,15 @@
 
 **Gemini Prompt Architect** est une Single Page Application (SPA) autonome conçue pour structurer, visualiser et tester des prompts pour Google Gemini avec rigueur technique. Basé sur le guide officiel *Gemini for Google Workspace*, cet outil impose l'application des 4 piliers essentiels d'un prompt efficace : **Persona, Tâche, Contexte et Format**.
 
-## 🚀 Fonctionnalités Clés
+## 🚀 Fonctionnalités clés
 
 * **Architecture Guidée :** Interface ergonomique (TailwindCSS) pour assembler les blocs logiques sans oubli.
 * **Test API Intégré :** Connexion directe à l'API Gemini (via votre clé API personnelle stockée en localStorage) pour valider les résultats instantanément.
 * **Export & Variables :** Prévisualisation temps réel (Texte/JSON), gestion de variables dynamiques et activation de boucles de feedback.
 * **100% Client-Side :** Aucune base de données serveur requise, fonctionne en JavaScript moderne (ES6+).
+* **URL de test:** https://fabricefx.github.io/gemini-structured-prompts/
 
-## 🛠 Installation Manuelle
+## 🛠 Installation manuelle
 
 Ce projet est conçu pour être hébergé sur Google Apps Script en tant que Web App.
 
