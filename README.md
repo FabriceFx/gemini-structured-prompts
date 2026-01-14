@@ -21,6 +21,7 @@ Basé sur le guide officiel *Gemini for Google Workspace*, cet outil impose l'ap
 2.  **Tâche (Quoi)** : Mission précise à accomplir.
 3.  **Contexte (Où/Pourquoi)** : Informations de fond et environnement.
 4.  **Format (Comment)** : Structure de sortie, ton et contraintes techniques.
+5.  **Test** : https://fabricefx.github.io/gemini-structured-prompts/
 
 ### 🚀 Fonctionnalités Clés
 * **Architecture Guidée & Ergonomique :** Interface moderne (TailwindCSS) pour assembler les blocs logiques sans oubli.
