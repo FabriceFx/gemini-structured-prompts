@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de Prompts - Gemini Edition</title>
+    <title>Générateur de prompts - Gemini Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -38,7 +38,7 @@
             <div>
                 <h1 class="text-3xl font-bold text-indigo-700 flex items-center">
                     <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" class="h-8 w-8 mr-2" alt="Gemini Logo">
-                    Générateur de Prompts
+                    Générateur de pPrompts
                 </h1>
                 <p class="text-gray-500 mt-2">Optimisé selon le guide officiel <em>Gemini for Google Workspace</em>.</p>
             </div>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="ml-3">
                     <p class="text-sm text-indigo-800">
-                        <strong>Les 4 Piliers d'un Prompt Efficace :</strong> 
+                        <strong>Les 4 piliers d'un prompt efficace :</strong> 
                         Pour obtenir les meilleurs résultats, assurez-vous de remplir les champs 
                         <span class="inline-block bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-xs font-bold mx-0.5">PERSONA</span>
                         <span class="inline-block bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-xs font-bold mx-0.5">TÂCHE</span>
@@ -89,7 +89,7 @@
             <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 flex flex-col h-full">
                 <div class="bg-indigo-600 px-6 py-4 flex-none flex justify-between items-center">
                     <h2 class="text-lg font-semibold text-white flex items-center">
-                        <i class="fas fa-sliders-h mr-2"></i> Paramètres du Prompt
+                        <i class="fas fa-sliders-h mr-2"></i> Paramètres du prompt
                     </h2>
                 </div>
                 
@@ -137,7 +137,7 @@
 
                         <div class="relative group">
                             <div class="flex justify-between mb-1">
-                                <label class="block text-sm font-medium text-gray-700">4. Format & Contraintes</label>
+                                <label class="block text-sm font-medium text-gray-700">4. Format & contraintes</label>
                                 <span class="pillar-badge bg-orange-100 text-orange-700">Comment</span>
                             </div>
                             
@@ -162,12 +162,12 @@
                                     <label class="block text-xs font-medium text-gray-500 mb-1">Ton</label>
                                     <select id="ton" class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 border p-2 text-sm bg-white" onchange="updateJSON()">
                                         <option value="">-- Sélectionner --</option>
-                                        <option value="Professionnel & Neutre">Professionnel & Neutre</option>
-                                        <option value="Amical & Décontracté">Amical & Décontracté</option>
-                                        <option value="Enthousiaste & Motivant">Enthousiaste & Motivant</option>
-                                        <option value="Concis & Direct">Concis & Direct</option>
-                                        <option value="Empathique & Bienveillant">Empathique & Bienveillant</option>
-                                        <option value="Académique & Détaillé">Académique & Détaillé</option>
+                                        <option value="Professionnel & Neutre">Professionnel & neutre</option>
+                                        <option value="Amical & Décontracté">Amical & décontracté</option>
+                                        <option value="Enthousiaste & Motivant">Enthousiaste & motivant</option>
+                                        <option value="Concis & Direct">Concis & direct</option>
+                                        <option value="Empathique & Bienveillant">Empathique & bienveillant</option>
+                                        <option value="Académique & Détaillé">Académique & détaillé</option>
                                         <option value="Persuasif (Vente)">Persuasif (Vente)</option>
                                         <option value="Vulgarisé (ELI5)">Vulgarisé (Simple pour débutant)</option>
                                     </select>
@@ -175,7 +175,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Autres Contraintes</label>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Autres contraintes</label>
                                 <textarea id="contraintes" rows="2" placeholder="Ex: Moins de 200 mots, pas de jargon technique, utiliser des émojis..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 border p-2 text-sm" oninput="updateJSON()"></textarea>
                             </div>
                         </div>
@@ -184,7 +184,7 @@
                     <div class="space-y-4 border-t border-gray-100 pt-6">
                         <div>
                             <div class="flex justify-between items-center mb-2">
-                                <label class="block text-sm font-medium text-gray-700">Instructions Spécifiques (Étapes)</label>
+                                <label class="block text-sm font-medium text-gray-700">Instructions spécifiques (Étapes)</label>
                                 <button type="button" onclick="addListItem('instructions-container')" class="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 px-2 py-1 rounded transition"><i class="fas fa-plus"></i></button>
                             </div>
                             <div id="instructions-container" class="space-y-2">
@@ -205,7 +205,7 @@
 
                          <div>
                             <div class="flex justify-between items-center mb-2">
-                                <label class="block text-sm font-medium text-gray-700">Variables Utilisateur ([...])</label>
+                                <label class="block text-sm font-medium text-gray-700">Variables utilisateur ([...])</label>
                                 <button type="button" onclick="addListItem('variables-container')" class="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 px-2 py-1 rounded transition"><i class="fas fa-plus"></i></button>
                             </div>
                             <div id="variables-container" class="space-y-2">
@@ -220,7 +220,7 @@
                 <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col flex-grow">
                      <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
                         <h3 class="text-sm font-semibold text-gray-700 flex items-center">
-                            <i class="fas fa-file-alt mr-2 text-indigo-500"></i> Prompt Final Généré
+                            <i class="fas fa-file-alt mr-2 text-indigo-500"></i> Prompt final généré
                         </h3>
                         <div class="flex gap-2">
                             <button onclick="copyToClipboard('text-preview-content')" class="text-xs bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-3 py-1.5 rounded transition shadow-sm">
@@ -236,9 +236,9 @@
                         <div class="flex items-center gap-2">
                             <label for="prompt-style-selector" class="text-xs font-bold text-gray-500 uppercase">Format :</label>
                             <select id="prompt-style-selector" onchange="updateJSON()" class="text-xs border-gray-300 rounded shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-1 pl-2 pr-8 text-gray-700">
-                                <option value="markdown">Markdown (Rédaction & Créativité)</option>
-                                <option value="xml">XML (Prompt Engineering Avancé)</option>
-                                <option value="json">JSON (Intégration API & Code)</option>
+                                <option value="markdown">Markdown (Rédaction & créativité)</option>
+                                <option value="xml">XML (Prompt engineering avancé)</option>
+                                <option value="json">JSON (Intégration API & code)</option>
                             </select>
                         </div>
                     </div>
