@@ -34,7 +34,6 @@
 <body class="bg-gray-50 text-gray-800 min-h-screen">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Header -->
         <header class="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
                 <h1 class="text-3xl font-bold text-indigo-700 flex items-center">
@@ -53,7 +52,6 @@
             </div>
         </header>
 
-        <!-- Guide Banner -->
         <div class="bg-gradient-to-r from-indigo-50 to-blue-50 border-l-4 border-indigo-500 p-4 mb-8 rounded-r-lg shadow-sm">
             <div class="flex items-start">
                 <div class="flex-shrink-0">
@@ -72,7 +70,6 @@
             </div>
         </div>
 
-        <!-- API Key Modal -->
         <div id="api-settings" class="hidden mb-8 bg-white border-l-4 border-yellow-400 p-4 rounded-r shadow-md animate-fade-in-down">
             <div class="flex justify-between items-start">
                 <div class="w-full">
@@ -89,7 +86,6 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
-            <!-- Formulaire (Gauche) -->
             <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 flex flex-col h-full">
                 <div class="bg-indigo-600 px-6 py-4 flex-none flex justify-between items-center">
                     <h2 class="text-lg font-semibold text-white flex items-center">
@@ -99,7 +95,6 @@
                 
                 <form id="promptForm" class="p-6 space-y-8 overflow-y-auto flex-grow">
                     
-                    <!-- Identification Rapide -->
                     <div class="grid grid-cols-2 gap-4">
                          <div>
                             <label class="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">ID</label>
@@ -111,10 +106,8 @@
                         </div>
                     </div>
 
-                    <!-- Les 4 Piliers -->
                     <div class="space-y-6 border-t border-gray-100 pt-6">
                         
-                        <!-- 1. PERSONA -->
                         <div class="relative group">
                             <div class="flex justify-between mb-1">
                                 <label class="block text-sm font-medium text-gray-700">1. Persona (Rôle)</label>
@@ -124,7 +117,6 @@
                             <p class="text-xs text-gray-400 mt-1 hidden group-hover:block">Donnez une identité claire à l'IA pour calibrer son expertise.</p>
                         </div>
 
-                        <!-- 2. TASK -->
                         <div class="relative group">
                             <div class="flex justify-between mb-1">
                                 <label class="block text-sm font-medium text-gray-700">2. Tâche (Mission)</label>
@@ -134,7 +126,6 @@
                             <p class="text-xs text-gray-400 mt-1 hidden group-hover:block">Décrivez l'action précise à effectuer.</p>
                         </div>
 
-                         <!-- 3. CONTEXT -->
                          <div class="relative group">
                             <div class="flex justify-between mb-1">
                                 <label class="block text-sm font-medium text-gray-700">3. Contexte</label>
@@ -144,7 +135,6 @@
                             <p class="text-xs text-gray-400 mt-1 hidden group-hover:block">Donnez un maximum d'informations de fond pour éviter les réponses génériques.</p>
                         </div>
 
-                        <!-- 4. FORMAT, TON & CONTRAINTES -->
                         <div class="relative group">
                             <div class="flex justify-between mb-1">
                                 <label class="block text-sm font-medium text-gray-700">4. Format & Contraintes</label>
@@ -152,7 +142,6 @@
                             </div>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <!-- Format (Liste déroulante) -->
                                 <div>
                                     <label class="block text-xs font-medium text-gray-500 mb-1">Format</label>
                                     <select id="format" class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 border p-2 text-sm bg-white" onchange="updateJSON()">
@@ -169,7 +158,6 @@
                                     </select>
                                 </div>
                                 
-                                <!-- Ton (Liste déroulante) -->
                                 <div>
                                     <label class="block text-xs font-medium text-gray-500 mb-1">Ton</label>
                                     <select id="ton" class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 border p-2 text-sm bg-white" onchange="updateJSON()">
@@ -186,7 +174,6 @@
                                 </div>
                             </div>
 
-                            <!-- Contraintes (Textarea) -->
                             <div>
                                 <label class="block text-xs font-medium text-gray-500 mb-1">Autres Contraintes</label>
                                 <textarea id="contraintes" rows="2" placeholder="Ex: Moins de 200 mots, pas de jargon technique, utiliser des émojis..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 border p-2 text-sm" oninput="updateJSON()"></textarea>
@@ -194,7 +181,6 @@
                         </div>
                     </div>
 
-                    <!-- Instructions & Détails -->
                     <div class="space-y-4 border-t border-gray-100 pt-6">
                         <div>
                             <div class="flex justify-between items-center mb-2">
@@ -202,11 +188,9 @@
                                 <button type="button" onclick="addListItem('instructions-container')" class="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 px-2 py-1 rounded transition"><i class="fas fa-plus"></i></button>
                             </div>
                             <div id="instructions-container" class="space-y-2">
-                                <!-- Dynamic Items -->
-                            </div>
+                                </div>
                         </div>
 
-                         <!-- Feedback Loop (NOUVEAU) -->
                          <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 mt-4">
                             <div class="flex items-start">
                                 <div class="flex items-center h-5">
@@ -219,24 +203,20 @@
                             </div>
                         </div>
 
-                         <!-- Variables -->
                          <div>
                             <div class="flex justify-between items-center mb-2">
                                 <label class="block text-sm font-medium text-gray-700">Variables Utilisateur ([...])</label>
                                 <button type="button" onclick="addListItem('variables-container')" class="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 px-2 py-1 rounded transition"><i class="fas fa-plus"></i></button>
                             </div>
                             <div id="variables-container" class="space-y-2">
-                                <!-- Dynamic Items -->
-                            </div>
+                                </div>
                         </div>
                     </div>
                 </form>
             </div>
 
-            <!-- Preview & Test (Droite) -->
             <div class="flex flex-col h-full gap-6">
                 
-                <!-- Bloc Aperçu Texte & Test -->
                 <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col flex-grow">
                      <div class="bg-gray-100 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
                         <h3 class="text-sm font-semibold text-gray-700 flex items-center">
@@ -251,13 +231,22 @@
                             </button>
                         </div>
                     </div>
+
+                    <div class="bg-gray-50 border-b border-gray-200 px-4 py-2">
+                        <div class="flex items-center gap-2">
+                            <label for="prompt-style-selector" class="text-xs font-bold text-gray-500 uppercase">Format :</label>
+                            <select id="prompt-style-selector" onchange="updateJSON()" class="text-xs border-gray-300 rounded shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-1 pl-2 pr-8 text-gray-700">
+                                <option value="markdown">Markdown (Rédaction & Créativité)</option>
+                                <option value="xml">XML (Prompt Engineering Avancé)</option>
+                                <option value="json">JSON (Intégration API & Code)</option>
+                            </select>
+                        </div>
+                    </div>
                     
-                    <!-- Texte du prompt -->
                     <div class="p-4 bg-gray-50 text-sm text-gray-800 whitespace-pre-wrap font-sans border-b border-gray-200 max-h-80 overflow-y-auto leading-relaxed" id="text-preview-content">
                         Remplissez le formulaire...
                     </div>
 
-                    <!-- Zone de réponse Gemini -->
                     <div id="gemini-response-area" class="flex-grow bg-white p-4 relative hidden flex flex-col border-t-4 border-indigo-500">
                         <div class="flex justify-between items-center mb-2">
                             <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Réponse de Gemini</h4>
@@ -268,15 +257,13 @@
                             <span class="text-xs text-indigo-600 font-medium">Gemini réfléchit...</span>
                         </div>
                         <div id="gemini-output" class="prose prose-sm max-w-none text-gray-800 overflow-y-auto h-full pr-2">
-                            <!-- Réponse Markdown ici -->
-                        </div>
+                            </div>
                     </div>
                 </div>
 
-                <!-- Bloc Aperçu JSON (Réduit) -->
                 <div class="bg-gray-900 rounded-xl shadow-lg flex flex-col overflow-hidden border border-gray-700 relative group h-48">
                     <div class="bg-gray-800 px-4 py-2 flex justify-between items-center border-b border-gray-700">
-                        <span class="text-gray-400 text-xs font-mono">JSON Structure</span>
+                        <span class="text-gray-400 text-xs font-mono">JSON Data Structure</span>
                          <button onclick="downloadJSON()" class="text-xs text-gray-300 hover:text-white"><i class="fas fa-download"></i></button>
                     </div>
                     <div class="relative flex-grow bg-[#1e1e1e] overflow-auto">
@@ -288,7 +275,6 @@
         </div>
     </div>
 
-    <!-- Notification Toast -->
     <div id="toast" class="fixed bottom-5 right-5 bg-gray-800 text-white px-4 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 flex items-center z-50">
         <i class="fas fa-check-circle text-green-400 mr-2"></i>
         <span id="toast-message">Copié !</span>
@@ -319,11 +305,9 @@
                 contexte: document.getElementById('contexte').value,
                 tache: document.getElementById('tache').value,
                 instructions_detailles: getListValues('instructions-container').filter(i => i.trim() !== ''),
-                // Nouveaux champs séparés
                 format: document.getElementById('format').value,
                 ton: document.getElementById('ton').value,
                 contraintes: document.getElementById('contraintes').value,
-                // ---
                 variables: getListValues('variables-container').filter(v => v.trim() !== ''),
                 feedback_loop: document.getElementById('feedback_loop').checked
             };
@@ -334,58 +318,115 @@
                 structure: structure
             };
 
-            // Update JSON Preview
+            // Update JSON Data Preview
             const jsonString = JSON.stringify(promptObject, null, 2);
             document.getElementById('json-preview').innerHTML = syntaxHighlight(jsonString);
 
-            // Update Text Preview
-            promptTextCache = generatePromptText(structure);
+            // Update Text Prompt Preview Based on Selection
+            const selectedStyle = document.getElementById('prompt-style-selector')?.value || 'markdown';
+
+            if (selectedStyle === 'xml') {
+                promptTextCache = generateXMLPrompt(structure);
+            } else if (selectedStyle === 'json') {
+                promptTextCache = generateJSONPrompt(structure);
+            } else {
+                promptTextCache = generateMarkdownPrompt(structure); // Default
+            }
+            
             document.getElementById('text-preview-content').innerText = promptTextCache || "Commencez par définir le Persona et la Tâche...";
         }
 
-        function generatePromptText(s) {
+        /**
+         * 1. SORTIE MARKDOWN (Recommandée pour la rédaction/créativité)
+         */
+        function generateMarkdownPrompt(s) {
             let parts = [];
-
-            // 1. Persona (Rôle)
-            if (s.role) parts.push(`**PERSONA (QUI) :**\n${s.role}`);
-
-            // 2. Contexte
-            if (s.contexte) parts.push(`**CONTEXTE (POURQUOI) :**\n${s.contexte}`);
-
-            // 3. Tâche
-            if (s.tache) parts.push(`**TÂCHE (QUOI) :**\n${s.tache}`);
             
-            // Instructions
+            if (s.role) parts.push(`### RÔLE\n${s.role}`);
+            if (s.contexte) parts.push(`### CONTEXTE\n${s.contexte}`);
+            if (s.tache) parts.push(`### TÂCHE\n${s.tache}`);
+
             if (s.instructions_detailles && s.instructions_detailles.length > 0) {
-                let instr = `**INSTRUCTIONS :**\n`;
+                let instr = `### INSTRUCTIONS\n`;
                 s.instructions_detailles.forEach(i => instr += `- ${i}\n`);
                 parts.push(instr.trim());
             }
 
-            // 4. Format, Ton & Contraintes (GROUPÉS)
             let formatParts = [];
-            
-            if (s.format) formatParts.push(`- Format : ${s.format}`);
+            if (s.format) formatParts.push(`- Format de sortie : ${s.format}`);
             if (s.ton) formatParts.push(`- Ton : ${s.ton}`);
-            if (s.contraintes) formatParts.push(`- Contraintes supplémentaires : ${s.contraintes}`);
+            if (s.contraintes) formatParts.push(`- Contraintes : ${s.contraintes}`);
             
             if (formatParts.length > 0) {
-                parts.push(`**FORMAT & CONTRAINTES (COMMENT) :**\n${formatParts.join('\n')}`);
+                parts.push(`### FORMAT & CONTRAINTES\n${formatParts.join('\n')}`);
             }
 
-            // Variables
             if (s.variables && s.variables.length > 0) {
-                let vars = `**VARIABLES À REMPLIR :**\n`;
-                s.variables.forEach(v => vars += `[${v}] = \n`);
+                let vars = `### DONNÉES D'ENTRÉE\n`;
+                s.variables.forEach(v => vars += `${v} = [Insérer ${v} ici]\n`);
                 parts.push(vars.trim());
             }
 
-            // FEEDBACK LOOP
             if (s.feedback_loop) {
-                parts.push(`---\n**IMPORTANT :** Avant de générer la réponse complète, pose-moi des questions si tu as besoin de précisions pour fournir le meilleur résultat. ("What questions do you have for me?")`);
+                parts.push(`---\n> **Avant de répondre**, pose-moi des questions si tu as besoin de précisions ("Ask me questions").`);
             }
 
             return parts.join('\n\n');
+        }
+
+        /**
+         * 2. SORTIE XML (Recommandée pour le Prompt Engineering complexe)
+         */
+        function generateXMLPrompt(s) {
+            let parts = [];
+
+            parts.push(`<role>${s.role || ''}</role>`);
+            parts.push(`<context>${s.contexte || ''}</context>`);
+            parts.push(`<task>${s.tache || ''}</task>`);
+
+            if (s.instructions_detailles && s.instructions_detailles.length > 0) {
+                let instr = s.instructions_detailles.map(i => `  <step>${i}</step>`).join('\n');
+                parts.push(`<instructions>\n${instr}\n</instructions>`);
+            }
+
+            parts.push(`<constraints>
+  <format>${s.format || ''}</format>
+  <tone>${s.ton || ''}</tone>
+  <other>${s.contraintes || ''}</other>
+</constraints>`);
+
+            if (s.variables && s.variables.length > 0) {
+                let vars = s.variables.map(v => `  <var name="${v}">[Insérer valeur]</var>`).join('\n');
+                parts.push(`<input_data>\n${vars}\n</input_data>`);
+            }
+
+            if (s.feedback_loop) {
+                parts.push(`<meta_instruction>Ask clarifying questions before generating the final output.</meta_instruction>`);
+            }
+
+            return `<prompt>\n${parts.join('\n')}\n</prompt>`;
+        }
+
+        /**
+         * 3. SORTIE JSON (Recommandée pour l'API / Machine-to-Machine)
+         */
+        function generateJSONPrompt(s) {
+            const promptData = {
+                role: s.role,
+                context: s.contexte,
+                task: s.tache,
+                instructions: s.instructions_detailles,
+                configuration: {
+                    format: s.format,
+                    tone: s.ton,
+                    constraints: s.contraintes
+                },
+                inputs: s.variables.reduce((acc, curr) => ({...acc, [curr]: "string"}), {}),
+                options: {
+                    feedback_loop: s.feedback_loop
+                }
+            };
+            return JSON.stringify(promptData, null, 2);
         }
 
         // --- API Integration ---
